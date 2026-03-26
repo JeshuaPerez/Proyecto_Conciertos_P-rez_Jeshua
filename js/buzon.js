@@ -1,3 +1,4 @@
+this.innerHtml = `
 <section id = "buzon">
     <h2>Sugerencias De Buzon</h2>
     <from id ="form-sugerencia">
@@ -10,4 +11,20 @@
         <h2>¡Gracias, Recibimos tu sugerencia!</h2>
         <ul id="sugerencias-lista"></ul>
     </div>
-    </section>
+    </section>`
+
+const formSugerencia = document.getElementById('form-sugerencia');
+const inmputSugerencia = document.getElementById('sugerencia');
+const listaSugerencias = document.getElementById('lista-sugerencias');
+
+formSugerencia.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const texto = inmputSugerencia.value.trim();
+
+    if (texto) {
+        const li = document.createElement('li');
+        li.textContent = texto;
+        listaSugerencias.appendChild(li);
+        inmputSugerencia.value = '';
+    }
+});
