@@ -181,6 +181,7 @@ class CCClientApp extends HTMLElement {
             <a href="admin.html">Admin</a>
           </nav>
           <span class="footer-copy">© ${new Date().getFullYear()} — Todos los derechos reservados</span>
+          <button onclick = "Window.location.href = 'buzon.html'">Sugerencias</button>
         </div>
       </footer>
 
