@@ -92,6 +92,10 @@ body {
   justify-content: center; align-items: center;
   border-radius: 8px; font-size: 1rem;
 }
+.submit { 
+  background: var(--accent2); color: #fff; border: none;
+  
+}
 
 /* ---- Inputs ---- */
 .input, .select, .textarea {

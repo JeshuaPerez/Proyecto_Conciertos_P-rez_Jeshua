@@ -1,4 +1,4 @@
-this.innerHtml = `
+
 <section id = "buzon">
     <h2>Sugerencias De Buzon</h2>
     <from id ="form-sugerencia">
@@ -11,7 +11,7 @@ this.innerHtml = `
         <h2>¡Gracias, Recibimos tu sugerencia!</h2>
         <ul id="sugerencias-lista"></ul>
     </div>
-    </section>`
+    </section>
 
 const formSugerencia = document.getElementById('form-sugerencia');
 const inmputSugerencia = document.getElementById('sugerencia');
