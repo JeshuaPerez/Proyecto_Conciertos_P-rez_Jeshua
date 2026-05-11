@@ -398,3 +398,8 @@
 @media (max-width: 500px) {
   .dashboard-grid { grid-template-columns: 1fr; }
 }
+
+@keyframes growBar {
+  from { width: 0; }
+  to   { width: var(--bar-w); }
+}

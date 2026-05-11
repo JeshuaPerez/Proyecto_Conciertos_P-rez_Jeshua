@@ -3,8 +3,6 @@
    Paleta: Rojo · Negro · Blanco
    ============================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap');
-
 :root {
   /* Nueva paleta: Rojo · Negro · Blanco */
   --bg:        #0a0a0a;
@@ -14,8 +12,7 @@
   --border:    #2e2e2e;
   --accent:    #e01010;        /* Rojo principal */
   --accent2:   #ff3333;        /* Rojo claro / hover */
-  --accent3:   #ffffff;        /* Blanco para acentos secundarios */
-  --accent-glow: rgba(224,16,16,.25);
+--accent-glow: rgba(224,16,16,.25);
   --text:      #f5f5f5;
   --text-dim:  #888888;
   --text-faint:#3a3a3a;
@@ -81,10 +78,6 @@ body {
 }
 .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
-.btn-white {
-  background: #fff; color: #0a0a0a; font-weight: 700;
-}
-.btn-white:hover { background: #e8e8e8; transform: translateY(-1px); }
 
 .btn-sm { padding: .38rem .9rem; font-size: .8rem; }
 .btn-icon {
@@ -187,16 +180,7 @@ body {
 .badge-accent { background: rgba(224,16,16,.15); color: var(--accent); border: 1px solid rgba(224,16,16,.35); }
 .badge-white  { background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.25); }
 .badge-dim    { background: rgba(255,255,255,.05); color: var(--text-dim); border: 1px solid var(--border); }
-/* Legacy badges — remapped */
-.badge-pink   { background: rgba(224,16,16,.12); color: var(--accent2); border: 1px solid rgba(224,16,16,.3); }
-.badge-blue   { background: rgba(255,255,255,.08); color: #ccc; border: 1px solid rgba(255,255,255,.2); }
 
-/* ---- Divider ---- */
-.divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), transparent);
-  margin: 1.5rem 0;
-}
 
 /* ---- Toast ---- */
 #toast-container {

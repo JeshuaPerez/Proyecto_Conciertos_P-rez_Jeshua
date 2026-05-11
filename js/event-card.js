@@ -14,9 +14,8 @@ class CCEventCard extends HTMLElement {
     const event = EventDB.getById(id);
     if (!event) return;
     const cat = CategoryDB.getById(event.categoryId);
-
-    // Indicar si el evento está en el carrito
     const inCart = CartDB.getAll().some(i => i.eventId === event.id);
+    const dateObj = new Date(event.date + 'T00:00:00');
 
     this.innerHTML = `
       <article class="event-card" data-id="${event.id}">
@@ -30,8 +29,8 @@ class CCEventCard extends HTMLElement {
           </div>
           ${cat ? `<span class="card-badge">${cat.name}</span>` : ''}
           <div class="card-date-chip">
-            <span class="chip-day">${new Date(event.date + 'T00:00:00').getDate()}</span>
-            <span class="chip-month">${new Date(event.date + 'T00:00:00').toLocaleDateString('es-GT', { month: 'short' }).toUpperCase()}</span>
+            <span class="chip-day">${dateObj.getDate()}</span>
+            <span class="chip-month">${dateObj.toLocaleDateString('es-GT', { month: 'short' }).toUpperCase()}</span>
           </div>
         </div>
         <div class="card-body">
@@ -67,10 +66,18 @@ class CCEventCard extends HTMLElement {
 }
 customElements.define('cc-event-card', CCEventCard);
 
-// Inject card styles — Rojo · Negro · Blanco
 const cardStyle = document.createElement('style');
 cardStyle.textContent = `
-  cc-event-card { display: block; }
+  cc-event-card {
+    display: block;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  cc-event-card.card-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   .event-card {
     background: var(--surface);
@@ -79,6 +86,7 @@ cardStyle.textContent = `
     overflow: hidden;
     transition: var(--transition);
     cursor: pointer;
+    will-change: transform;
   }
   .event-card:hover {
     border-color: var(--accent);

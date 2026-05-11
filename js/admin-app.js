@@ -48,12 +48,14 @@ class CCAdminApp extends HTMLElement {
             <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:.85rem;font-size:1rem;margin-top:.4rem">Entrar</button>
           </form>
           <div style="text-align:center;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--border)">
-            <button onclick="window.location.href='index.html'" class="btn btn-ghost btn-sm" style="width:100%;justify-content:center">Volver a la tienda</button>
+            <button id="goToStoreBtn" class="btn btn-ghost btn-sm" style="width:100%;justify-content:center">Volver a la tienda</button>
           </div>
           <p style="text-align:center;margin-top:.8rem;font-size:.75rem;color:var(--text-faint)">admin@mail.com · 123456</p>
         </div>
       </div>
     `;
+
+    this.querySelector('#goToStoreBtn').addEventListener('click', () => { window.location.href = 'index.html'; });
 
     this.querySelector('#togglePass').addEventListener('click', () => {
       const inp = this.querySelector('#loginPass');
@@ -283,7 +285,7 @@ class CCAdminApp extends HTMLElement {
                 <span style="font-family:var(--font-disp);color:var(--accent)">${formatPrice(amount)}</span>
               </div>
               <div style="background:var(--border);border-radius:99px;height:5px;overflow:hidden">
-                <div style="background:var(--accent);height:100%;width:${pct}%;border-radius:99px;transition:width .8s ease"></div>
+                <div style="--bar-w:${pct}%;background:var(--accent);height:100%;border-radius:99px;width:0;animation:growBar .8s .1s cubic-bezier(.4,0,.2,1) forwards"></div>
               </div>
             </div>
           `;
@@ -406,23 +408,24 @@ class CCAdminApp extends HTMLElement {
 
   /* ========== SALES ========== */
   _renderSales() {
-    let sales = SaleDB.getAll();
+    const allSales = SaleDB.getAll();
+    let sales = allSales;
     if (this._saleSearch) {
       const q = this._saleSearch.toLowerCase();
-      sales = sales.filter(s =>
+      sales = allSales.filter(s =>
         (s.customer?.name || '').toLowerCase().includes(q) ||
         (s.customer?.email || '').toLowerCase().includes(q) ||
         s.id.slice(-5).toLowerCase().includes(q)
       );
     }
 
-    const totalRevenue = SaleDB.getAll().reduce((s, v) => s + (v.total || 0), 0);
+    const totalRevenue = allSales.reduce((s, v) => s + (v.total || 0), 0);
 
     return `
       <div class="module-header">
         <h2 class="module-title">Ventas</h2>
         <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
-          <span class="badge badge-accent">${SaleDB.getAll().length} venta${SaleDB.getAll().length !== 1 ? 's' : ''}</span>
+          <span class="badge badge-accent">${allSales.length} venta${allSales.length !== 1 ? 's' : ''}</span>
           <span style="font-family:var(--font-disp);color:var(--accent);font-size:1.3rem">${formatPrice(totalRevenue)}</span>
         </div>
       </div>
@@ -581,7 +584,7 @@ class CCAdminApp extends HTMLElement {
   /* ========== EVENT MODAL ========== */
   _openEventModal(event = null) {
     const cats   = CategoryDB.getAll();
-    const cities = ['Ciudad de Guatemala', 'Quetzaltenango (Xela)', 'Antigua Guatemala', 'Mazatenango', 'Cobán', 'Fórum Majadas'];
+    const cities = CITIES;
     const modal  = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `

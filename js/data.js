@@ -9,6 +9,15 @@ const KEYS = {
   CART:       'cc_cart',
 };
 
+const CITIES = [
+  'Ciudad de Guatemala',
+  'Quetzaltenango (Xela)',
+  'Antigua Guatemala',
+  'Mazatenango',
+  'Cobán',
+  'Fórum Majadas',
+];
+
 /* ---- Seed data ---- */
 const DEFAULT_CATEGORIES = [
   { id: 'c1', name: 'Rock',        description: 'Conciertos de rock nacional e internacional' },
@@ -118,7 +127,5 @@ function formatPrice(n) {
 function formatDate(d) {
   return new Date(d + 'T00:00:00').toLocaleDateString('es-GT', { day: '2-digit', month: 'long', year: 'numeric' });
 }
-
-function uid() { return '_' + Math.random().toString(36).slice(2, 9); }
 
 initData();

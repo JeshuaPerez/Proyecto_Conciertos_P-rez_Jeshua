@@ -1,18 +1,13 @@
 /* =============================================
-   WEB COMPONENT: <cc-toast> — Notifications
-   Paleta: Rojo · Negro · Blanco
+   TOAST — Sistema de notificaciones
    ============================================= */
 
-class CCToast extends HTMLElement {
-  connectedCallback() {
-    if (!document.getElementById('toast-container')) {
-      const c = document.createElement('div');
-      c.id = 'toast-container';
-      document.body.appendChild(c);
-    }
-  }
-}
-customElements.define('cc-toast', CCToast);
+const TOAST_COLORS = {
+  success: { bg: '#111', border: '#3ddc84', icon: '✓', iconColor: '#3ddc84' },
+  error:   { bg: '#111', border: '#e01010', icon: '✕', iconColor: '#e01010' },
+  info:    { bg: '#111', border: '#888',    icon: 'i', iconColor: '#aaa'    },
+  warning: { bg: '#111', border: '#f5a623', icon: '⚠', iconColor: '#f5a623' },
+};
 
 function showToast(message, type = 'success', duration = 3200) {
   let container = document.getElementById('toast-container');
@@ -22,17 +17,9 @@ function showToast(message, type = 'success', duration = 3200) {
     document.body.appendChild(container);
   }
 
+  const c = TOAST_COLORS[type] || TOAST_COLORS.info;
+
   const toast = document.createElement('div');
-
-  // Paleta rojo/negro/blanco para toasts
-  const colors = {
-    success: { bg: '#111',   border: '#3ddc84', icon: '✓', iconColor: '#3ddc84' },
-    error:   { bg: '#111',   border: '#e01010', icon: '✕', iconColor: '#e01010' },
-    info:    { bg: '#111',   border: '#888',    icon: 'i', iconColor: '#aaa' },
-    warning: { bg: '#111',   border: '#f5a623', icon: '⚠', iconColor: '#f5a623' },
-  };
-  const c = colors[type] || colors.info;
-
   toast.style.cssText = `
     display: flex; align-items: center; gap: .65rem;
     padding: .8rem 1.1rem;

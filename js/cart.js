@@ -54,7 +54,7 @@ class CCCart extends HTMLElement {
               return `
                 <div class="cart-item">
                   <img src="${ev.image}" alt="${ev.name}" class="cart-item-img"
-                    onerror="this.src='https://...'"/>
+                    onerror="this.src='https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=120&q=70'"/>
                   <div class="cart-item-info">
                     <p class="cart-item-name">${ev.name}</p>
                     <p class="cart-item-meta">${ev.city} · ${formatDate(ev.date)}</p>
@@ -246,6 +246,11 @@ cartStyle.textContent = `
     background: var(--accent2);
     box-shadow: 0 8px 28px rgba(224,16,16,.6);
   }
+  @keyframes countPop {
+    0%   { transform: scale(0) rotate(-12deg); }
+    70%  { transform: scale(1.25) rotate(3deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
   .cart-count {
     position: absolute; top: -4px; right: -4px;
     background: #fff; color: var(--accent);
@@ -253,6 +258,7 @@ cartStyle.textContent = `
     font-size: .72rem; font-weight: 800;
     display: flex; align-items: center; justify-content: center;
     border: 2px solid var(--accent);
+    animation: countPop .35s cubic-bezier(.34,1.56,.64,1);
   }
 
   .cart-modal { max-width: 460px; width: 100%; display: flex; flex-direction: column; max-height: 88vh; }

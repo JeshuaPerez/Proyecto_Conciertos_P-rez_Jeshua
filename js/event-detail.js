@@ -4,9 +4,18 @@
    ============================================= */
 
 class CCEventDetail extends HTMLElement {
+  constructor() {
+    super();
+    this._onShowDetail = (e) => this._open(e.detail.id);
+  }
+
   connectedCallback() {
-    document.addEventListener('show-event-detail', (e) => this._open(e.detail.id));
+    document.addEventListener('show-event-detail', this._onShowDetail);
     this.innerHTML = '';
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener('show-event-detail', this._onShowDetail);
   }
 
   _open(id) {

@@ -13,7 +13,6 @@ class CCClientApp extends HTMLElement {
   }
 
   connectedCallback() {
-    document.addEventListener('cart-updated', () => this._updateCartCount());
     this._render();
   }
 
@@ -44,7 +43,7 @@ class CCClientApp extends HTMLElement {
     const categories = CategoryDB.getAll();
     const filtered = this._getFiltered();
     const featured = this._getFeatured();
-    const cities = ['Ciudad de Guatemala', 'Quetzaltenango (Xela)', 'Antigua Guatemala', 'Mazatenango', 'Cobán', 'Fórum Majadas'];
+    const cities = CITIES;
     const totalEvents = EventDB.getAll().length;
 
     this.innerHTML = `
@@ -191,11 +190,7 @@ class CCClientApp extends HTMLElement {
 
     this._attachFilters();
     this._attachFeaturedEvents();
-
-    // Hero CTA scroll to filters
-    this.querySelector('#heroCtaBtn')?.addEventListener('click', () => {
-      this.querySelector('#filtersSection')?.scrollIntoView({ behavior: 'smooth' });
-    });
+    this._observeCards();
 
     // Newsletter submit
     this.querySelector('#newsletterForm')?.addEventListener('submit', (e) => {
@@ -257,6 +252,8 @@ class CCClientApp extends HTMLElement {
       this._search = ''; this._city = ''; this._category = '';
       this._render();
     });
+
+    this._observeCards();
   }
 
   _attachFilters() {
@@ -279,8 +276,20 @@ class CCClientApp extends HTMLElement {
     clearBtn2?.addEventListener('click', () => { this._search = ''; this._city = ''; this._category = ''; this._render(); });
   }
 
-  _updateCartCount() {
-    // Cart component handles its own re-render
+  _observeCards() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('card-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    this.querySelectorAll('cc-event-card').forEach((card, i) => {
+      card.style.transitionDelay = `${i * 0.05}s`;
+      observer.observe(card);
+    });
   }
 }
 customElements.define('cc-client-app', CCClientApp);
@@ -290,6 +299,24 @@ customElements.define('cc-client-app', CCClientApp);
 // ─────────────────────────────────────────────
 const clientStyle = document.createElement('style');
 clientStyle.textContent = `
+  /* ---- Entrance animations ---- */
+  @keyframes heroIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow    { animation: heroIn .6s  .10s both; }
+  .hero-title      { animation: heroIn .75s .28s both; }
+  .hero-sub        { animation: heroIn .6s  .48s both; }
+  .hero-scroll-hint { animation: heroIn .5s  .72s both; }
+
+  @keyframes featuredIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .featured-card:nth-child(1) { animation: featuredIn .5s .05s both; }
+  .featured-card:nth-child(2) { animation: featuredIn .5s .18s both; }
+  .featured-card:nth-child(3) { animation: featuredIn .5s .30s both; }
+
   /* ---- Header ---- */
     .client-header {
     position: sticky; top: 0; z-index: 200;
@@ -383,8 +410,6 @@ clientStyle.textContent = `
   }
   .hero-title em { font-style: normal; color: var(--accent); }
   .hero-sub { color: var(--text-dim); font-size: 1.05rem; max-width: 420px; margin: 0 auto 2rem; }
-  .hero-actions { display: flex; gap: .8rem; justify-content: center; flex-wrap: wrap; }
-  .hero-cta { padding: .8rem 2rem; font-size: 1rem; }
 
   .hero-scroll-hint {
     position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
